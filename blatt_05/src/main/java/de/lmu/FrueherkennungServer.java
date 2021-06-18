@@ -1,0 +1,37 @@
+package de.lmu;
+
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
+import de.entity.*;
+
+class FrueherkennungServer implements FrueherkennungIF
+{
+
+    public static void main(String args[])
+    {
+        System.out.println("hi server");
+        
+        FrueherkennungIF fe = new FrueherkennungServer();
+        try {
+			FrueherkennungIF stub = (FrueherkennungIF) UnicastRemoteObject.exportObject(fe, 0);
+			Registry r = LocateRegistry.createRegistry(1099);
+			r.bind("Frueherkennung", stub);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}        
+    }
+    
+    @Override
+	public Bericht analysieren(Roentgenbild rb) {
+		// TODO Auto-generated method stub
+    	return new Bericht();
+	}
+}
