@@ -4,56 +4,64 @@ import entity.Student;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.glassfish.jersey.internal.guava.Lists;
+
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-
+@Path("studentaffairs")
 public class StudentService {
 
     private static int nextStudentId = 1;
-    // private static Map<Integer, Student> studentDb;  // kann als interne Datenbank verwendet werden
+    private static Map<Integer, Student> studentDb = new HashMap<>();
 
-
+    @POST
+    @Path("students")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Student matriculate(Student s) {
-
-        // Methode annotieren und ausimplementieren und folgende "throw"-Anweisung löschen!
-        throw new IllegalStateException("method 'matriculate' needs to be implemented first");
-
+        s.setMatrikelNr(nextStudentId);
+        studentDb.put(nextStudentId, s);
+        nextStudentId++;
+        return s;
     }
 
-    public Student exmatriculate(int studentId) {
-
-        // Methode annotieren und ausimplementieren und folgende "throw"-Anweisung löschen!
-        throw new IllegalStateException("method 'exmatriculate' needs to be implemented first");
-
+    @DELETE
+    @Path("students/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Student exmatriculate(@PathParam("id") int studentId) {
+        return studentDb.remove(studentId);
     }
 
-    public Student getStudentById(int studentId) {
-
-        // Methode annotieren und ausimplementieren und folgende "throw"-Anweisung löschen!
-        throw new IllegalStateException("method 'getStudentById' needs to be implemented first");
-
+    @GET
+    @Path("students/{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Student getStudentById(@PathParam("id") int studentId) {
+        return studentDb.get(studentId);
     }
 
-    public Student updateStudentAccount(int studentId, Student newData) {
-
-        // Methode annotieren und ausimplementieren und folgende "throw"-Anweisung löschen!
-        throw new IllegalStateException("method 'updateStudentAccount' needs to be implemented first");
-
+    @PUT
+    @Path("students/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Student updateStudentAccount(@PathParam("id") int studentId, Student newData) {
+        return studentDb.put(studentId, newData);
     }
 
+    //@GET
+    //@Path("students")
+    //@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Collection<Student> getAllStudents() {
-
-        // Methode annotieren und ausimplementieren und folgende "throw"-Anweisung löschen!
-        throw new IllegalStateException("method 'getAllStudents' needs to be implemented first");
-
+        return studentDb.values();
     }
 
-    public Collection<Student> getStudentsByRange(int fromStudentId, int toStudentId) {
-
-        // Methode annotieren und ausimplementieren und folgende "throw"-Anweisung löschen!
-        throw new IllegalStateException("method 'getStudentsByRange' needs to be implemented first");
-
+    @GET
+    @Path("students")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Collection<Student> getStudentsByRange(@QueryParam("from") int fromStudentId, @QueryParam("to") int toStudentId) {
+        return Lists.newArrayList(studentDb.values().iterator()).subList(fromStudentId, toStudentId);
     }
 }

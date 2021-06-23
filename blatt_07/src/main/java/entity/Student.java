@@ -12,6 +12,7 @@ public class Student {
     private int matrikelNr;
     private String vorname;
     private String nachname;
+    private Adresse adresse;
 
     // Default-Konstruktor zwingend notwendig
     public Student() {}
@@ -21,11 +22,23 @@ public class Student {
         this.nachname = nachname;
     }
 
+    public Student(String vorname, String nachname, Adresse adresse) {
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.adresse = adresse;
+    }
+
     public Student(int matrikelNr, String vorname, String nachname) {
         this(vorname, nachname);
         this.matrikelNr = matrikelNr;
     }
 
+    public Student(int matrikelNr, String vorname, String nachname, Adresse adresse) {
+        this.matrikelNr = matrikelNr;
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.adresse = adresse;
+    }
 
     public int getMatrikelNr() {
         return matrikelNr;
@@ -49,6 +62,14 @@ public class Student {
 
     public void setNachname(String nachname) {
         this.nachname = nachname;
+    }
+
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
     }
 
     @Override
