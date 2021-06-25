@@ -1,5 +1,7 @@
 package app;
 
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -7,17 +9,25 @@ import service.StudentService;
 
 import javax.swing.*;
 import jakarta.ws.rs.ext.RuntimeDelegate;
+import service.VeranstaltungService;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Server {
 
+    public static HazelcastInstance hazelcast;
+
     public static void main(String[] args) throws IOException {
+
+        hazelcast = Hazelcast.newHazelcastInstance();
+
         // Create configuration object for webserver instance
         ResourceConfig config = new ResourceConfig();
         // Register REST-resources (i.e. service classes) with the webserver
         config.register(ServerExceptionMapper.class);
         config.register(StudentService.class);
+        config.register(VeranstaltungService.class);
         // add further REST-resources like this:
         // config.register(XyzService.class);
 
