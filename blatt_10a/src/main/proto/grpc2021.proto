@@ -1,0 +1,24 @@
+syntax = "proto3";
+package de.othr.vs;
+option java_multiple_files = true;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+message Bestellung {
+  int32 id = 1;
+  google.protobuf.Timestamp date = 2;
+  string userId = 3;
+  repeated Bestellposition bestellPositionen = 4;
+}
+
+message Bestellposition {
+  int32 pos = 1;
+  int32 menge = 2;
+  string productId = 3;
+}
+
+service BestellService {
+  rpc bestellen(Bestellung) returns (Bestellung);
+  rpc auflisten(google.protobuf.Empty) returns (stream Bestellung);
+  rpc loeschen(Bestellung) returns (Bestellung);
+}
